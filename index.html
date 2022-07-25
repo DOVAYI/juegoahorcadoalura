@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="canvas">
+        <div class="fila">
+            <canvas id="canva" width="700" height="400"></canvas>
+        </div>
+        <div class="fila">
+            <div class="c5">
+                <button style="width: 75%;" class="boton1" onclick=recargarPagina()>reiniciar juego</button>
+            </div>
+            <div class="c5">
+                <a href="principal.html"><button style="width: 75%;" >Ir al inicio</button></a>
+            </div>
+
+        </div>
+
+
+    </div>
+    <div id="prueba">
+        <p>prueba de ocultamiento</p>
+    </div>
+
+
+    <script>
+        var pantalla = document.querySelector("canvas");
+        var pincel = pantalla.getContext("2d");
+        pincel.beginPath();
+        pincel.moveTo(100, 200);
+        var vectorDividirPalabra;
+        var y = 260;
+        var contador = 0;
+        var contadorAciertos = 0;
+        var vectorPalabras = ["html", "css", "script", "java", "angular", "python", "portatil", "crud", "archivo", "datos",
+        "memoria","mouse","pantalla","software"]
+
+
+        pincel.fillStyle = "lightgrey";   //propiedad
+        pincel.fillRect(0, 0, 700, 390); //función
+
+        function elegirPalabra() {
+
+            var numero = Math.floor((Math.random() * (vectorPalabras.length - 0 + 1)) + 0);
+            console.log(numero)
+            var palabra = vectorPalabras[numero];
+            dividirPalabra(palabra);
+        }
+
+        function dividirPalabra(palabra) {
+            var x1 = 80;
+            var x2 = 120;
+
+            vectorDividirPalabra = palabra.split('');
+            for (var i = 0; i < vectorDividirPalabra.length; i++) {
+                pincel.beginPath();
+                pincel.moveTo(x1, y);
+                pincel.lineTo(x2, y);
+                pincel.stroke();
+                x1 = x1 + 50;
+                x2 = x2 + 50;
+            }
+
+
+        }
+
+
+
+        window.addEventListener("keydown", function onKeyDownHandler(event) {
+            var estado = false;
+            var codigo = event.which || event.keyCode;
+            var letraPresionada = String.fromCharCode(codigo);
+
+            for (var i = 0; i < vectorDividirPalabra.length; i++) {
+
+                if (letraPresionada.toLowerCase() === vectorDividirPalabra[i]) {
+
+                    var xInicial = valorXinicial(i);
+                    var texto = vectorDividirPalabra[i];
+                    pincel.beginPath() //iniciar ruta
+                    pincel.font = "bold 20px arial"; //estilo de texto
+                    pincel.strokeText(texto, xInicial, 250); //texto con los dos métodos
+                    estado = true;
+                    contadorAciertos++;
+
+                }
+
+            }
+            if (contadorAciertos === vectorDividirPalabra.length) {
+                alert("Felicitaciohjnes has ganado");
+                recargarPagina();
+            }
+            if (!estado) {
+                contador++;
+                dibujarAhorcado(contador);
+
+            }
+
+
+        }, false);
+
+        function valorXinicial(posicion) {
+            var x;
+            if (posicion === 0) {
+                x = 100;
+            } else if (posicion === 1) {
+                x = 150;
+            } else if (posicion === 2) {
+                x = 200;
+            } else if (posicion === 3) {
+                x = 250;
+            } else if (posicion === 4) {
+                x = 300;
+            } else if (posicion === 5) {
+                x = 350;
+            } else if (posicion === 6) {
+                x = 400;
+            } else if (posicion === 7) {
+                x = 450;
+            }
+            return x;
+        }
+
+
+        function dibujarAhorcado(numero) {
+            if (numero === 1) {
+                pincel.beginPath();
+                pincel.moveTo(100, 200);
+                //vertical
+                pincel.lineTo(100, 50);
+                pincel.stroke();
+            } else if (numero === 2) {
+
+                //horizontal
+                pincel.lineTo(200, 50);
+                pincel.stroke();
+            } else if (numero === 3) {
+
+                //la cuerda
+                pincel.lineTo(200, 75);
+                pincel.stroke();
+            }
+            else if (numero === 4) {
+                //cabeza
+                pincel.beginPath();
+                pincel.arc(200, 85, 10, 0, 2 * 3.14);
+                pincel.stroke();
+            } else if (numero === 5) {
+
+
+                //tronco
+                pincel.beginPath();
+                pincel.moveTo(200, 95);
+                pincel.lineTo(200, 135);
+                pincel.stroke();
+
+                //piernas izquierda
+                pincel.beginPath();
+                pincel.moveTo(200, 135);
+                pincel.lineTo(170, 170);
+                pincel.stroke();
+
+                //piernas derecha
+                pincel.beginPath();
+                pincel.moveTo(200, 135);
+                pincel.lineTo(230, 170);
+                pincel.stroke();
+
+                //brazo izquierdo
+
+                pincel.beginPath();
+                pincel.moveTo(200, 105);
+                pincel.lineTo(170, 135);
+                pincel.stroke();
+
+                //brazo derecho
+
+                pincel.beginPath();
+                pincel.moveTo(200, 105);
+                pincel.lineTo(230, 135);
+                pincel.stroke();
+
+                alert("ohhh perdistes");
+                recargarPagina();
+
+            }
+
+        }
+
+        function recargarPagina(){
+            window.location.reload();
+        }
+
+        elegirPalabra();
+
+
+
+
+    </script>
+</body>
+
+</html>
